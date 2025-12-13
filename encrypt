@@ -1,7 +1,7 @@
 #Steganography
 
 #file path
-file_path = r'C:\Users\Lenovo\Desktop\python\stegmatogragy\Envy Bmp.bmp'
+file_path = r'Envy 2.bmp'
 
 #open the file
 f = open(file_path, 'rb')
@@ -54,63 +54,61 @@ def text_input(input_string):
 
 string_input = text_input("renter")
 binary_output = string_to_binary(string_input)
-print(f"Original string {string_input}")
-print(f"Binary output {binary_output}")
 
 
 
 
 #changing image 
 file_content = list(file_content)
-byte = []
 counter = 0
 do_nothing = 0
 secret_message_binary = binary_list
-for i in secret_message_binary:
 
-    byte = (file_content[top_row_offset:])
+for row in range(image_height):
+    row_offset = bytes_offset + (image_height - 1 - row) * row_size
+    for column in range(image_width * 3):  #*3 for rgb in pixel
+        #making sure counter doesnt go over for loop
+        if counter >= len(secret_message_binary):
+            break  
 
-    #checking if pixel values odd or even
-    if byte[counter] % 2 == 0:
-        #if its even? check if i is also even
-        if i == 0:
-            #do nothing
-            do_nothing = 0
-        #if its 1 then make it odd
-        elif i == 1:
+        byte = secret_message_binary[counter]
+        byte_index = row_offset + column
+
+        #checking if pixel values odd or even
+        if file_content[byte_index] % 2 == 0:
+            #if its even? check if i is also even
+            if byte == 0:
+                #do nothing
+                do_nothing = 0
+            #if its 1 then make it odd
+            elif byte == 1:
             #make it odd
             # make sure its not 0 before minusing
-            if byte[counter] == 0: file_content[top_row_offset + counter] += 1
-            else: file_content[top_row_offset + counter] -= 1
-            
-            
-    #if its odd
-    elif byte[counter] % 2 == 1:
-        #if its odd? check if i is also odd
-        if i == 1:
-            #do nothing
-            do_nothing = 0
-        #if its 0 then make it even
-        elif i == 0:
-            #make it even
-            # make sure its not 0 before minusing
-            if byte[counter] == 0: file_content[top_row_offset + counter] += 1
-            else: file_content[top_row_offset + counter] -= 1
-        
+                if file_content[byte_index] == 0: file_content[byte_index] += 1
+                else: file_content[byte_index] -= 1
 
-    counter += 1
-    
-counter = 0
+        #if its odd      
+        elif file_content[byte_index] % 2 == 1:
+            #if its odd? check if i is also odd
+            if byte == 1:
+                #do nothing
+                do_nothing = 0
+            #if its 0 then make it even
+            elif byte == 0:
+                #make it even
+                #make sure its not 0 before minusing
+                if file_content[byte_index] == 0: file_content[byte_index] += 1
+                else: file_content[byte_index] -= 1
+                    
+
+        counter += 1
+
+    if counter >= len(secret_message_binary):
+        break
 
 
-output_path = r'C:\Users\Lenovo\Desktop\python\stegmatogragy\newenvyimage.bmp'
+
+output_path = r'Envy edited 2.bmp'
 
 f = open(output_path , "wb")
 f.write(bytes(file_content))
-
-
-
-
-
-
-

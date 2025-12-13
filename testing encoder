@@ -1,7 +1,7 @@
 #Steganography
 
 #file path
-file_path = r'C:\Users\Lenovo\Desktop\python\stegmatogragy\Envy Bmp.bmp'
+file_path = r'Envy 2.bmp'
 
 #open the file
 f = open(file_path, 'rb')
@@ -54,8 +54,6 @@ def text_input(input_string):
 
 string_input = text_input("renter")
 binary_output = string_to_binary(string_input)
-print(f"Original string {string_input}")
-print(f"Binary output {binary_output}")
 
 
 
@@ -110,7 +108,7 @@ for row in range(image_height):
 
 
 
-output_path = r'C:\Users\Lenovo\Desktop\python\stegmatogragy\newenvyimage.bmp'
+output_path = r'Envy edited 2.bmp'
 
 f = open(output_path , "wb")
 f.write(bytes(file_content))
