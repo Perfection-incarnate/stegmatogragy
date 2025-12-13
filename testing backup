@@ -1,0 +1,114 @@
+Steganography
+
+#file path
+file_path = r'C:\Users\Lenovo\Desktop\python\stegmatogragy\Envy Bmp.bmp'
+
+#open the file
+f = open(file_path, 'rb')
+file_content = f.read()
+
+#Get width and hight from file header
+image_width = int.from_bytes(file_content[18:22], byteorder='little')
+image_height = int.from_bytes(file_content[22:26], byteorder='little')
+
+#byte offset
+bytes_offset = int.from_bytes(file_content[10 : 14], byteorder='little')
+
+#making it starting from top left
+row_size = ((image_width * 3 + 3) // 4) * 4
+top_row_offset = bytes_offset + (image_height - 1) * row_size
+
+
+#how many changeable varabiles in image
+size_num = (image_height * image_width)
+#checking how many characters can be entered
+character_max = (size_num // 8) - 1
+
+
+
+print(f"max character size: {character_max}")
+    
+#take input and convert it into binary
+binary_list = []
+tem = []
+def string_to_binary(text):
+    for char in text:
+        tem.extend((format(ord(char), '08b')))
+    
+    #add eight zeros at the end
+    tem.extend("00000000")
+    for i in tem: binary_list.append(int(i))
+
+    
+
+        
+    return binary_list
+def text_input(input_string):
+    input_string = "reneter ur input"
+    input_string = input(str(f"Input ur secret sentence. The inputed image can only take {character_max} characters  :"))
+    while len(input_string) > character_max:
+        if len(input_string) > character_max:
+            print(f"input is too large. your image can only take {character_max} characters  :")
+            input_string = input(str(f"Input ur secret sentence. The inputed image can only take {character_max} characters  :"))
+    return input_string
+
+string_input = text_input("renter")
+binary_output = string_to_binary(string_input)
+print(f"Original string {string_input}")
+print(f"Binary output {binary_output}")
+
+
+
+
+#changing image 
+file_content = list(file_content)
+byte = []
+counter = 0
+do_nothing = 0
+secret_message_binary = binary_list
+for i in secret_message_binary:
+
+    byte = (file_content[top_row_offset:])
+
+    #checking if pixel values odd or even
+    if byte[counter] % 2 == 0:
+        #if its even? check if i is also even
+        if i == 0:
+            #do nothing
+            do_nothing = 0
+        #if its 1 then make it odd
+        elif i == 1:
+            #make it odd
+            # make sure its not 0 before minusing
+            if byte[counter] == 0: file_content[top_row_offset + counter] += 1
+            else: file_content[top_row_offset + counter] -= 1
+            
+            
+    #if its odd
+    elif byte[counter] % 2 == 1:
+        #if its odd? check if i is also odd
+        if i == 1:
+            #do nothing
+            do_nothing = 0
+        #if its 0 then make it even
+        elif i == 0:
+            #make it even
+            # make sure its not 0 before minusing
+            if byte[counter] == 0: file_content[top_row_offset + counter] += 1
+            else: file_content[top_row_offset + counter] -= 1
+        
+
+    counter += 1
+    
+counter = 0
+
+
+output_path = r'C:\Users\Lenovo\Desktop\python\stegmatogragy\newenvyimage.bmp'
+
+f = open(output_path , "wb")
+f.write(bytes(file_content))
+
+
+
+
+
