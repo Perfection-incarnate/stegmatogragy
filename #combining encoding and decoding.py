@@ -5,13 +5,12 @@ while choose != 1 and choose != 2:
     print("Enter what you wish to do")
     print("1: hiding a secret message into an image")
     print("2: extract a secret message from an image")
-    choose = int(input("iput the number of your choise :"))
+    choose = int(input("input the number of your choice :"))
     print()
     print()
     print("-------------------------------------------------")
-    if choose != 1 and choose != 2: print("You have entered a noneexistant choise. Try again")
+    if choose != 1 and choose != 2: print("You have entered a noneexistant choice. Try again")
     print("-------------------------------------------------")
-    print()
     print()
 
 
@@ -20,6 +19,8 @@ if choose == 1:
     print("-------------------------------------------------")
     print("You chose hiding a secret message into an image")
     print("-------------------------------------------------")
+    print()
+    print()
 
     #encoder code
     #Steganography
@@ -97,23 +98,25 @@ if choose == 1:
     choose_input = 0
     while choose_input != 1 and choose_input != 2:
         print("--------------------------------")
-        print("Enter your text input method. note: both inputs only take english words")
+        print("Enter your text input method. note: both inputs only support the english language")
         print("1: inputing text manually")
         print("2: inputing a text file that contains the text")
-        choose_input = int(input("iput the number of your choise :"))
+        choose_input = int(input("input the number of your choice :"))
         print()
         print()
         print("-------------------------------------------------")
-        if choose_input != 1 and choose_input != 2: print("You have entered a noneexistant choise. Try again")
+        if choose_input != 1 and choose_input != 2: print("You have entered a noneexistant choice. Try again")
         print("-------------------------------------------------")
         print()
         print()
+
 
     #entering a text file
     if choose_input == 2:
         #take text file
         while True:
             #take input
+            print("You have chosen to input a text file")
             text_file = input("Enter the name of the text file: ")
             text_file += ".txt"
             try:
@@ -133,15 +136,16 @@ if choose == 1:
                 print("Error: File does not exist. Try again")
 
     #entering text manually         
-    if choose_input ==1:
+    if choose_input == 1:
         input_string = "reneter ur input"
-        input_string = input(str(f"Input ur secret sentence. The inputed image can only take {character_max} characters  :"))
+        print("You have chosen to enter the text manually")
+        input_string = input(str(f"Input your secret sentence. The inputed image can only take {character_max} characters  :"))
         while len(input_string) > character_max:
             if len(input_string) > character_max:
                 print(f"input is too large. your image can only take {character_max} characters  :")
                 input_string = input(str(f"Input ur secret sentence. The inputed image can only take {character_max} characters  :"))
                 #put it in string input
-                string_input = input_string
+        string_input = input_string
 
 
     #take string and run it through converter function
