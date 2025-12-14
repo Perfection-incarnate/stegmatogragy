@@ -18,7 +18,7 @@ while choose != 1 and choose != 2:
 #encoding
 if choose == 1: 
     print("-------------------------------------------------")
-    print("You choose hiding a secret message into an image")
+    print("You chose hiding a secret message into an image")
     print("-------------------------------------------------")
 
     #encoder code
@@ -28,6 +28,7 @@ if choose == 1:
         print("-----------------------------------------------------------------------------------")
         print("Enter the bmp image you wish to hide the secret text in. The image must a bmp image")
         file_name = input("Enter BMP file name: ").strip()
+        file_name += ".bmp"
 
         #check if file is bmp by reading extension
         if not file_name.lower().endswith(".bmp"):
@@ -83,27 +84,67 @@ if choose == 1:
     tem = []
     def string_to_binary(text):
         for char in text:
-            if char == "’": char = "'" #fixing bug
+            if char == "’" or char == "‘": char = "'" #fixing bug
             tem.extend((format(ord(char), '08b')))
         
         #add eight zeros at the end
         tem.extend("00000000")
         for i in tem: binary_list.append(int(i))
-
-        
-
-            
+    
         return binary_list
-    def text_input(input_string):
+    
+    #take input
+    choose_input = 0
+    while choose_input != 1 and choose_input != 2:
+        print("--------------------------------")
+        print("Enter your text input method. note: both inputs only take english words")
+        print("1: inputing text manually")
+        print("2: inputing a text file that contains the text")
+        choose_input = int(input("iput the number of your choise :"))
+        print()
+        print()
+        print("-------------------------------------------------")
+        if choose_input != 1 and choose_input != 2: print("You have entered a noneexistant choise. Try again")
+        print("-------------------------------------------------")
+        print()
+        print()
+
+    #entering a text file
+    if choose_input == 2:
+        #take text file
+        while True:
+            #take input
+            text_file = input("Enter the name of the text file: ")
+            text_file += ".txt"
+            try:
+                file = open(text_file, "r", encoding="utf-8") #encoding so characters that arent in ascii dont break code
+                text_string = file.read()
+                while len(text_string) > character_max:
+                    print(f"Text file is too large. Your image can only take {character_max}")
+                    text_file = input("Enter the name of the text file: ")
+                    text_file += ".txt"
+                    file = open(text_file, "r")
+                    text_string = file.read()
+                file.close()
+                #put it in string input
+                string_input = text_string
+                break 
+            except FileNotFoundError:
+                print("Error: File does not exist. Try again")
+
+    #entering text manually         
+    if choose_input ==1:
         input_string = "reneter ur input"
         input_string = input(str(f"Input ur secret sentence. The inputed image can only take {character_max} characters  :"))
         while len(input_string) > character_max:
             if len(input_string) > character_max:
                 print(f"input is too large. your image can only take {character_max} characters  :")
                 input_string = input(str(f"Input ur secret sentence. The inputed image can only take {character_max} characters  :"))
-        return input_string
+                #put it in string input
+                string_input = input_string
 
-    string_input = text_input("renter")
+
+    #take string and run it through converter function
     binary_output = string_to_binary(string_input)
 
 
@@ -160,7 +201,7 @@ if choose == 1:
     print()
     print()
     print("----------------------------------------")
-    Holder = input("Name the exported file. note: if a file already has this name then it will get overwritten")
+    Holder = input("Name the exported file. note: if a file already has this name then it will get overwritten: ")
     Holder += ".bmp"
     print (Holder)
     output_path = Holder
@@ -168,27 +209,6 @@ if choose == 1:
     f.write(bytes(file_content))
 
     print(f"File {output_path} is succesfully created")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -208,6 +228,7 @@ if choose == 2:
     while True:#always true
         print("-----------------------------------------------------------------------------------")
         file_name = input("Enter BMP file name: ").strip()
+        file_name += '.bmp'
 
         #check if file is bmp by reading extension
         if not file_name.lower().endswith(".bmp"):
