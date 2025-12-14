@@ -33,6 +33,7 @@ binary_list = []
 tem = []
 def string_to_binary(text):
     for char in text:
+        if char == "’": char = "'" #fixing bug
         tem.extend((format(ord(char), '08b')))
     
     #add eight zeros at the end

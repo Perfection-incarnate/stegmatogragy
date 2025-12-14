@@ -1,11 +1,41 @@
 #Decode
 
+
+#check if file exists and its an bmp
+while True:#always true
+    print("-----------------------------------------------------------------------------------")
+    file_name = input("Enter BMP file name: ").strip()
+
+    #check if file is bmp by reading extension
+    if not file_name.lower().endswith(".bmp"):
+        print("-----------------------------------")
+        print("Error: file must be an .bmp image")
+        print("-----------------------------------")
+        continue #go back to the start
+
+    #if it exists
+    try:
+        f = open(file_name, "rb")
+        f.close()
+        break 
+    except:
+        print("----------------------------------------------------------------------------------")
+        print("You have entered a none existant file or the file is not actually a Bmp. try again")
+        print("----------------------------------------------------------------------------------")
+
+print("You have selected:", file_name)
+
 #file path
-file_path = r'Envy edited 2.bmp'
+file_path = file_name
 
 #open the file
 f = open(file_path, 'rb')
 file_content = f.read()
+
+
+
+
+
 
 
 #Get width and hight from file header
